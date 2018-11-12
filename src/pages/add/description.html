@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+        Description
+        </ion-title>
+        <ion-buttons start>
+        <button ion-button (click)="dismiss()">
+            <span ion-text color="primary">Cancel</span>
+        </button>
+        <button ion-button (click)="descriptionDone()">
+            <span ion-text color="primary">Ok</span>
+        </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-item>
+        <ion-textarea placeholder="Enter a description" [(ngModel)]="description"></ion-textarea>
+    </ion-item>
+</ion-content>
+      

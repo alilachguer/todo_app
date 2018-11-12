@@ -4,10 +4,10 @@ import { AddPage } from './add';
 
 @NgModule({
   declarations: [
-    AddPage,
+    AddPage
   ],
   imports: [
     IonicPageModule.forChild(AddPage),
-  ],
+  ]
 })
 export class AddPageModule {}

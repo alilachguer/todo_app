@@ -7,12 +7,32 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>add</ion-title>
+    <ion-title>Add Task</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
+  <ion-list inset>
 
+    <ion-item>
+      <ion-label floating>Title</ion-label>
+      <ion-input type="text" [(ngModel)]="title"></ion-input>
+    </ion-item>
+  
+    <ion-item (click)="openDescriptionModal()">
+      <ion-label floating>Description</ion-label>
+      <ion-input type="text" [(ngModel)]="desc"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Date</ion-label>
+      <ion-datetime displayFormat="MMM DD, YYYY HH:mm" [(ngModel)]="myDate"></ion-datetime>
+    </ion-item>
+  
+    <p >
+      {{test}}
+    </p>
+    
+  </ion-list>
 </ion-content>

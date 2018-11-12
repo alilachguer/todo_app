@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { AddPage } from '../pages/add/add';
+import { AddPage, ModalDescription } from '../pages/add/add';
 import { CalendarPage } from '../pages/calendar/calendar';
 import { SearchPage } from '../pages/search/search';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -17,7 +17,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     AddPage,
     CalendarPage,
     SearchPage,
-    TabsPage
+    TabsPage,
+    ModalDescription
   ],
   imports: [
     BrowserModule,
@@ -29,7 +30,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     AddPage,
     CalendarPage,
     SearchPage,
-    TabsPage
+    TabsPage,
+    ModalDescription
   ],
   providers: [
     StatusBar,
