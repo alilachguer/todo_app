@@ -11,6 +11,10 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { DatePicker } from '@ionic-native/date-picker';
+import { SQLite } from '@ionic-native/sqlite';
+import { NativeStorage } from '@ionic-native/native-storage';
+import { DatabaseProvider } from '../providers/database/database';
 @NgModule({
   declarations: [
     MyApp,
@@ -36,7 +40,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    DatePicker,
+    NativeStorage,
+    SQLite,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    DatabaseProvider
   ]
 })
 export class AppModule {}

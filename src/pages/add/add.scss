@@ -6,4 +6,12 @@ desc-add{
     ion-icon{
         color:color($colors, primary, secondary);
     }
+
+    .text{
+        height: 100%;
+    }
+
+    ion-select{
+        max-width: 100% !important;
+    }
 }
