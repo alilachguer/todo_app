@@ -9,12 +9,16 @@ import { SearchPage } from '../pages/search/search';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from "@angular/http";
 
 import { DatePicker } from '@ionic-native/date-picker';
 import { SQLite } from '@ionic-native/sqlite';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { DatabaseProvider } from '../providers/database/database';
+import { IonicStorageModule } from '@ionic/storage';
+import { SQLitePorter} from "@ionic-native/sqlite-porter";
+
 @NgModule({
   declarations: [
     MyApp,
@@ -26,7 +30,10 @@ import { DatabaseProvider } from '../providers/database/database';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    HttpClientModule,
+    HttpModule,
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -39,12 +46,12 @@ import { DatabaseProvider } from '../providers/database/database';
   ],
   providers: [
     StatusBar,
-    SplashScreen,
     DatePicker,
     NativeStorage,
     SQLite,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DatabaseProvider
+    DatabaseProvider,
+    SQLitePorter,
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
 export class AppModule {}

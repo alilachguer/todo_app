@@ -25,6 +25,7 @@
     "@ionic-native/native-storage": "^4.17.0",
     "@ionic-native/splash-screen": "~4.15.0",
     "@ionic-native/sqlite": "^4.17.0",
+    "@ionic-native/sqlite-porter": "^4.18.0",
     "@ionic-native/status-bar": "~4.15.0",
     "@ionic/storage": "2.2.0",
     "browserslist": "^4.3.4",
@@ -36,9 +37,11 @@
     "ionicons": "3.0.0",
     "rxjs": "5.5.11",
     "sw-toolbox": "3.6.0",
+    "uk.co.workingedge.cordova.plugin.sqliteporter": "1.1.0",
     "zone.js": "0.8.26"
   },
   "devDependencies": {
+    "@angular/cli": "^7.1.0",
     "@ionic/app-scripts": "^3.2.0",
     "typescript": "~2.6.2"
   },
@@ -47,7 +50,8 @@
     "plugins": {
       "cordova-sqlite-storage": {},
       "cordova-plugin-datepicker": {},
-      "cordova-plugin-nativestorage": {}
+      "cordova-plugin-nativestorage": {},
+      "uk.co.workingedge.cordova.plugin.sqliteporter": {}
     }
   }
 }
