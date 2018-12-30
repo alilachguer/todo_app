@@ -1,10 +1,11 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Platform, ViewController  } from 'ionic-angular';
-import { DatePicker, DatePickerOptions } from '@ionic-native/date-picker';
+import { Component, ElementRef } from '@angular/core';
+import {IonicPage, NavController, NavParams, ModalController, Platform, ViewController } from 'ionic-angular';
+import { DatePicker } from '@ionic-native/date-picker';
 
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Todo } from '../../Todo';
 import { DatabaseProvider } from '../../providers/database/database';
+import {Toast} from "@ionic-native/toast";
 
 
 /**
@@ -21,28 +22,33 @@ import { DatabaseProvider } from '../../providers/database/database';
 })
 export class AddPage {
 
-  title: string;
-  desc: string;
-  myDate: any;
   todoDate: Date;
   public type: any;
-  db: SQLiteObject;
-  public todos: Todo[] = [];
   public items = [];
 
-  constructor(public navCtrl: NavController, 
-      public navParams: NavParams,
-      public datePicker: DatePicker,
-      public sqlite: SQLite,
-      public dbProvider: DatabaseProvider,
-      public modalCtrl: ModalController) {
+  todo = {
+    title : "",
+    description : "",
+    type : "",
+    date : "",
+    notification : 0,
+  };
 
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              public datePicker: DatePicker,
+              public sqlite: SQLite,
+              public toast: Toast,
+              public dbProvider: DatabaseProvider,
+              public modalCtrl: ModalController) {
+
+    /**
     this.dbProvider.getData().then((todos) => {
       if(todos){
         this.items = todos;
       }
     });
-
+    **/
     /*
     this.dbProvider.getDatabaseState().subscribe(ready => {
       if(ready){
@@ -53,6 +59,49 @@ export class AddPage {
       //this.createDatabaseFile();
   }
 
+
+
+
+  saveData() {
+    this.sqlite.create({
+      name: this.dbProvider.DATABASE_NAME,
+      location: 'default'
+    }).then((db: SQLiteObject) => {
+      db.executeSql('INSERT INTO '+ this.dbProvider.TABLE_NAME +' VALUES(NULL,?,?,?,?,?,?,?)',
+        [this.todo.title,
+          this.todo.description,
+          this.todo.type,
+          this.todo.date,
+          (this.todoDate.getHours()-1),
+          this.todoDate.getMinutes(),
+          0])
+        .then(res => {
+          console.log(res);
+          this.toast.show('Data saved', '5000', 'center').subscribe(
+            toast => {
+              this.navCtrl.popToRoot();
+            }
+          );
+        })
+        .catch(e => {
+          console.log(e);
+          this.toast.show(e, '5000', 'center').subscribe(
+            toast => {
+              console.log(toast);
+            }
+          );
+        });
+    }).catch(e => {
+      console.log(e);
+      this.toast.show(e, '5000', 'center').subscribe(
+        toast => {
+          console.log(toast);
+        }
+      );
+    });
+  }
+
+  /****
   addItem() {
     let todo = new Todo(this.title, this.desc, this.type, this.todoDate,
       (this.todoDate.getHours()-1).toString(), this.todoDate.getMinutes().toString(), '0');
@@ -107,20 +156,25 @@ export class AddPage {
     this.db.executeSql(req, []).catch(e => console.log(e));
     console.log("tache inseree!!");
   }
-  
-  addTask(){
+   addTask(){
     console.log("clicked!!");
-    let todo = new Todo(this.title, this.desc, this.type, 
-      this.todoDate, this.todoDate.getHours.toString(), 
+    let todo = new Todo(this.title, this.desc, this.type,
+      this.todoDate, this.todoDate.getHours.toString(),
       this.todoDate.getMinutes.toString(), "0");
 
-    this.addTodo();
+    //this.addTodo();
     //this.insertTodo(todo);
-    
+
   }
 
+  ***/
+
+
+
+
+  // fonction UI, permet d'affecter la date choisie par le user a la variable todoDate
   dateChanged(){
-    this.todoDate = new Date(this.myDate);
+    this.todoDate = new Date(this.todo.date);
     console.log(this.todoDate.getMonth()+1 + ", " + (this.todoDate.getHours()-1)+":"+this.todoDate.getMinutes() );
   }
 
@@ -128,11 +182,12 @@ export class AddPage {
     console.log('ionViewDidLoad AddPage');
   }
 
+  // ouvre le modal qui permet d'inserer une description
   openDescriptionModal() {
-    let modal = this.modalCtrl.create(ModalDescription, {description : this.desc});
+    let modal = this.modalCtrl.create(ModalDescription, {description : this.todo.description});
     modal.onDidDismiss(data => {
       if(data != null){
-        this.desc = data.description;
+        this.todo.description = data.description;
       }
     });
     modal.present();
@@ -171,7 +226,7 @@ export class ModalDescription {
 
   ngAfterViewInit(){
     console.log("I'm alive!");
-    this.element.nativeElement.querySelector("textarea").style.height = "100%";
+    this.element.nativeElement.querySelector("textarea");
   }
 
   // @ViewChild('myDesc') myDesc: ElementRef;

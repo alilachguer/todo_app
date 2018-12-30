@@ -33,7 +33,7 @@ public COLUMN_NAME_TIMEMINUTE = 'timeminute';
 public COLUMN_NAME_NOTIFICATION = 'notification';
 
 public SQL_CREATE_ENTRIES: string = 
-      "CREATE TABLE if not exists" + this.TABLE_NAME + " (" +
+      "CREATE TABLE if not exists " + this.TABLE_NAME + " (" +
       this.COLUMN_NAME_ID + " INTEGER PRIMARY KEY, " +
       this.COLUMN_NAME_TITLE + " TEXT, " +
       this.COLUMN_NAME_DESCRIPTION + " TEXT, " +

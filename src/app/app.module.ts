@@ -1,12 +1,13 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { AddPage, ModalDescription } from '../pages/add/add';
 import { CalendarPage } from '../pages/calendar/calendar';
 import { SearchPage } from '../pages/search/search';
 import { TabsPage } from '../pages/tabs/tabs';
+import { HomePage} from "../pages/home/home";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { HttpClientModule } from '@angular/common/http';
@@ -18,15 +19,21 @@ import { NativeStorage } from '@ionic-native/native-storage';
 import { DatabaseProvider } from '../providers/database/database';
 import { IonicStorageModule } from '@ionic/storage';
 import { SQLitePorter} from "@ionic-native/sqlite-porter";
+import {SplashScreen} from "@ionic-native/splash-screen";
+import {Toast} from "@ionic-native/toast";
+import {EditPage, ModalDescriptionEdit} from "../pages/edit/edit";
 
 @NgModule({
   declarations: [
     MyApp,
+    HomePage,
     AddPage,
     CalendarPage,
     SearchPage,
     TabsPage,
-    ModalDescription
+    ModalDescription,
+    EditPage,
+    ModalDescriptionEdit
   ],
   imports: [
     BrowserModule,
@@ -39,16 +46,21 @@ import { SQLitePorter} from "@ionic-native/sqlite-porter";
   entryComponents: [
     MyApp,
     AddPage,
+    HomePage,
     CalendarPage,
     SearchPage,
     TabsPage,
+    EditPage,
+    ModalDescriptionEdit,
     ModalDescription
   ],
   providers: [
     StatusBar,
     DatePicker,
+    SplashScreen,
     NativeStorage,
     SQLite,
+    Toast,
     DatabaseProvider,
     SQLitePorter,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

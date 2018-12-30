@@ -1,31 +1,26 @@
-<!--
-  Generated template for the AddPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Add Task</ion-title>
+    <ion-title>Edit a task</ion-title>
   </ion-navbar>
 
 </ion-header>
 
+
 <ion-content padding>
   <ion-grid justify-content-center center>
-    <form (ngSubmit)="saveData()">
-
+    <form (ngSubmit)="updateData()">
+      <ion-input type="hidden" [(ngModel)]="data.id" name="id"></ion-input>
       <ion-row justify-content-center>
         <ion-col text-center>
-          <h2>Add a new Task</h2>
+          <h2>Update a Task</h2>
         </ion-col>
       </ion-row>
       <ion-row justify-content-start>
         <ion-col push-lg-3 col-lg-6 push-md-3 col-md-6>
           <ion-item>
             <ion-label floating>Title</ion-label>
-            <ion-input type="text" [(ngModel)]="todo.title" name="title"></ion-input>
+            <ion-input type="text" [(ngModel)]="data.title" name="title"></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -33,7 +28,7 @@
         <ion-col push-lg-3 col-lg-6 push-md-3 col-md-6>
           <ion-item (click)="openDescriptionModal()">
             <ion-label floating>Description</ion-label>
-            <ion-input type="text" [(ngModel)]="todo.description" name="description"></ion-input>
+            <ion-input type="text" [(ngModel)]="data.description" name="description"></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -42,7 +37,7 @@
           <ion-item>
             <ion-label floating>Date</ion-label>
             <ion-datetime displayFormat="DD/MM/YYYY HH:mm"
-                          [(ngModel)]="todo.date" name="date"
+                          [(ngModel)]="data.date" name="date"
                           (ngModelChange)="dateChanged()" name="date" required=""></ion-datetime>
           </ion-item>
         </ion-col>
@@ -51,7 +46,7 @@
         <ion-col push-lg-3 col-lg-6 push-md-3 col-md-6>
           <ion-item>
             <ion-label>Type</ion-label>
-            <ion-select [(ngModel)]="todo.type" name="type">
+            <ion-select [(ngModel)]="data.type" name="type">
               <ion-option value="" selected>Select type</ion-option>
               <ion-option value="Sport">Sport</ion-option>
               <ion-option value="Travail">Travail</ion-option>
@@ -63,34 +58,14 @@
       </ion-row>
       <ion-row justify-content-center align-items-center>
         <ion-col>
-            <button ion-button push-2 col-8 push-lg-4 col-lg-4 push-md-3 col-md-6 type="submit">
-              Add Task
-            </button>
+          <button ion-button push-2 col-8 push-lg-4 col-lg-4 push-md-3 col-md-6 type="submit">
+            Update Task
+          </button>
         </ion-col>
       </ion-row>
 
     </form>
 
-    <!---
-    <ion-row>
-      <ion-col>
-        <span>my todos</span>
-        <ion-list>
-          <ion-item *ngFor="let todo of items">
-            <ul>
-              <li>{{ todo.$title }}</li>
-              <li>{{ todo.$description }}</li>
-              <li>{{ todo.$type }}</li>
-              <li>{{ todo.$date }}</li>
-            </ul>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-    </ion-row>
-
-    --->
-
-
-
   </ion-grid>
+
 </ion-content>
