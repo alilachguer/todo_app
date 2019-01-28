@@ -4,6 +4,7 @@ import {ModalDescription} from "../add/add";
 import {SQLite, SQLiteObject} from "@ionic-native/sqlite";
 import {Toast} from "@ionic-native/toast";
 import {DatabaseProvider} from "../../providers/database/database";
+import {LocalNotifications} from "@ionic-native/local-notifications";
 
 /**
  * Generated class for the EditPage page.
@@ -27,9 +28,11 @@ export class EditPage {
     date : "",
     notification : 0,
   };
+  notification: boolean;
 
   constructor(public navCtrl: NavController, private sqlite: SQLite,
               private toast: Toast,
+              private localNotifications: LocalNotifications,
               public dbProvider: DatabaseProvider,
               public navParams: NavParams, public modalCtrl: ModalController) {
     this.getCurrentData(navParams.get("id"));
@@ -49,6 +52,8 @@ export class EditPage {
             this.data.type = res.rows.item(0).type;
             this.data.description = res.rows.item(0).description;
             this.data.notification = res.rows.item(0).notification;
+
+            this.localNotifications.cancel(res.rows.item(0).id);
           }
         })
         .catch(e => {
@@ -75,6 +80,10 @@ export class EditPage {
       location: 'default'
     }).then((db: SQLiteObject) => {
       this.dateChanged();
+      if(this.notification === true){
+        this.data.notification = 1;
+        this.submitNotification(this.data.id);
+      }
       db.executeSql('UPDATE '+this.dbProvider.TABLE_NAME
         +' SET '+this.dbProvider.COLUMN_NAME_TITLE+'=?, '
         +this.dbProvider.COLUMN_NAME_DESCRIPTION+'=?, '
@@ -90,7 +99,7 @@ export class EditPage {
           this.data.date,
           this.todoDate.getHours()-1,
           this.todoDate.getMinutes(),
-          0,
+          this.data.notification,
           this.data.id
         ])
         .then(res => {
@@ -118,6 +127,23 @@ export class EditPage {
       );
     });
   }
+
+  submitNotification(id: number) {
+    console.log(this.data);
+    var date = new Date(this.data.date);
+    console.log(date);
+    console.log("--------------- inserted id: " + id);
+    this.localNotifications.schedule({
+      id: id,
+      text: 'Notification: ' + this.data.title,
+      trigger: { at: date },
+      led: 'FF0000'
+    });
+
+    this.data = { id : 0, title : "", description : "", type : "", date : "", notification : 0 };
+    console.log("******** notification has been planted!!")
+  }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EditPage');

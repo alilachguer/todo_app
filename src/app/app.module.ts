@@ -23,6 +23,8 @@ import {SplashScreen} from "@ionic-native/splash-screen";
 import {Toast} from "@ionic-native/toast";
 import {EditPage, ModalDescriptionEdit} from "../pages/edit/edit";
 
+import { LocalNotifications } from '@ionic-native/local-notifications';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -62,6 +64,7 @@ import {EditPage, ModalDescriptionEdit} from "../pages/edit/edit";
     SQLite,
     Toast,
     DatabaseProvider,
+    LocalNotifications,
     SQLitePorter,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

@@ -1,11 +1,11 @@
 import { Component, ElementRef } from '@angular/core';
-import {IonicPage, NavController, NavParams, ModalController, Platform, ViewController } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ModalController, Platform, ViewController, AlertController } from 'ionic-angular';
 import { DatePicker } from '@ionic-native/date-picker';
 
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
-import { Todo } from '../../Todo';
 import { DatabaseProvider } from '../../providers/database/database';
 import {Toast} from "@ionic-native/toast";
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 
 /**
@@ -25,6 +25,7 @@ export class AddPage {
   todoDate: Date;
   public type: any;
   public items = [];
+  notification: Boolean = true;
 
   todo = {
     title : "",
@@ -39,27 +40,42 @@ export class AddPage {
               public datePicker: DatePicker,
               public sqlite: SQLite,
               public toast: Toast,
+              public platform: Platform,
+              public alertCtrl: AlertController,
+              public localNotifications: LocalNotifications,
               public dbProvider: DatabaseProvider,
               public modalCtrl: ModalController) {
 
-    /**
-    this.dbProvider.getData().then((todos) => {
-      if(todos){
-        this.items = todos;
-      }
-    });
-    **/
-    /*
-    this.dbProvider.getDatabaseState().subscribe(ready => {
-      if(ready){
-        this.loadTodoData();
-      }
-    })
-    */
-      //this.createDatabaseFile();
   }
 
+  submitNotification(id: number) {
+    console.log(this.todo);
+    var date = new Date(this.todo.date);
+    console.log(date);
+    console.log("--------------- inserted id: " + id);
+    this.localNotifications.schedule({
+      id: id,
+      text: 'Notification: ' + this.todo.title,
+      trigger: { at: date },
+      led: 'FF0000',
+      sound: null,
+    });
 
+    this.todo = { title : "", description : "", type : "", date : "", notification : 0 };
+    console.log("******** notification has been planted!!")
+  }
+
+  setSound() {
+    if (this.platform.is('android')) {
+      return 'file://src/assets/sounds/unconvinced.mp3'
+    } else {
+      return 'file://src/assets/sounds/unconvinced.m4r'
+    }
+  }
+
+  takePhoto(){
+    
+  }
 
 
   saveData() {
@@ -67,6 +83,9 @@ export class AddPage {
       name: this.dbProvider.DATABASE_NAME,
       location: 'default'
     }).then((db: SQLiteObject) => {
+      if(this.notification === true){
+        this.todo.notification = 1;
+      }
       db.executeSql('INSERT INTO '+ this.dbProvider.TABLE_NAME +' VALUES(NULL,?,?,?,?,?,?,?)',
         [this.todo.title,
           this.todo.description,
@@ -74,12 +93,15 @@ export class AddPage {
           this.todo.date,
           (this.todoDate.getHours()-1),
           this.todoDate.getMinutes(),
-          0])
+          this.todo.notification])
         .then(res => {
           console.log(res);
           this.toast.show('Data saved', '5000', 'center').subscribe(
             toast => {
               this.navCtrl.popToRoot();
+              if(this.notification === true){
+                this.submitNotification(res.insertId);
+              }
             }
           );
         })
@@ -100,76 +122,6 @@ export class AddPage {
       );
     });
   }
-
-  /****
-  addItem() {
-    let todo = new Todo(this.title, this.desc, this.type, this.todoDate,
-      (this.todoDate.getHours()-1).toString(), this.todoDate.getMinutes().toString(), '0');
-    this.saveItem(todo);
-  }
-
-  saveItem(item){
-    this.items.push(item);
-    this.dbProvider.save(this.items);
-  }
-
-  loadTodoData(){
-    this.dbProvider.getAllTodos().then(data => {
-      this.todos = data;
-    });
-  }
-
-  addTodo(){
-    //let todo = new Todo(this.title, this.desc, this.type, this.todoDate, (this.todoDate.getHours()-1).toString(), this.todoDate.getMinutes().toString(), '0');
-    this.dbProvider.addTodo(this.title, this.desc, this.type,
-      this.todoDate, (this.todoDate.getHours()-1).toString(), this.todoDate.getMinutes().toString(), '0').then(data => {
-      this.loadTodoData();
-    });
-  }
-
-  public createDatabaseFile(): void{
-    this.sqlite.create({
-      name: this.dbProvider.DATABASE_NAME,
-      location: 'default'
-    })
-    .then((db: SQLiteObject) =>{
-      db.executeSql(this.dbProvider.SQL_CREATE_ENTRIES)
-        console.log("executed SQL create database " + this.dbProvider.DATABASE_NAME);
-        this.db = db;
-        this.createTables();
-    })
-    .catch(e => console.log(e));
-  }
-
-  public createTables(){
-    this.db.executeSql(this.dbProvider.SQL_CREATE_ENTRIES, [])
-      .then(() => console.log('Executed SQL: ' + this.dbProvider.SQL_CREATE_ENTRIES))
-      .catch(e => console.log(e));
-  }
-
-  public insertTodo(todo: Todo ){
-    let req: string = "insert into " + this.dbProvider.TABLE_NAME + "values ("
-    +"'"+todo.$title+"', '"+todo.$description+"', '"+todo.$type+"', '"
-    +todo.$date+"', '"+todo.$timeHour+"', '"+todo.$timeMinute+"', '"+todo.$notification+
-    ")";
-
-    this.db.executeSql(req, []).catch(e => console.log(e));
-    console.log("tache inseree!!");
-  }
-   addTask(){
-    console.log("clicked!!");
-    let todo = new Todo(this.title, this.desc, this.type,
-      this.todoDate, this.todoDate.getHours.toString(),
-      this.todoDate.getMinutes.toString(), "0");
-
-    //this.addTodo();
-    //this.insertTodo(todo);
-
-  }
-
-  ***/
-
-
 
 
   // fonction UI, permet d'affecter la date choisie par le user a la variable todoDate
@@ -192,7 +144,7 @@ export class AddPage {
     });
     modal.present();
   }
-  
+
 }
 
 
@@ -204,7 +156,7 @@ export class AddPage {
 export class ModalDescription {
 
   public description: string;
-  constructor(public platform: Platform, 
+  constructor(public platform: Platform,
       public params: NavParams,
       public element:ElementRef,
       public modalCtrl: ModalController,
@@ -218,7 +170,7 @@ export class ModalDescription {
     this.viewCtrl.dismiss(data);
   }
 
-  
+
 
   dismiss() {
     this.viewCtrl.dismiss();
@@ -236,4 +188,4 @@ export class ModalDescription {
   //   element.style.height = scrollHeight + 'px';
   //   this.myDesc['_elementRef'].nativeElement.style.height = (scrollHeight + 16) + 'px';
   // }
-} 
+}
