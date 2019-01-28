@@ -5,7 +5,7 @@ import { DatePicker } from '@ionic-native/date-picker';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { DatabaseProvider } from '../../providers/database/database';
 import {Toast} from "@ionic-native/toast";
-import { LocalNotifications } from '@ionic-native/local-notifications';
+import {LocalNotifications} from '@ionic-native/local-notifications';
 
 
 /**
@@ -49,28 +49,26 @@ export class AddPage {
   }
 
   submitNotification(id: number) {
-    console.log(this.todo);
-    var date = new Date(this.todo.date);
-    console.log(date);
-    console.log("--------------- inserted id: " + id);
-    this.localNotifications.schedule({
-      id: id,
-      text: 'Notification: ' + this.todo.title,
-      trigger: { at: date },
-      led: 'FF0000',
-      sound: null,
-    });
+    if(this.notification === true){
+      this.todo.notification = 1;
+      console.log(this.todo);
+      var date = new Date(this.todo.date);
+      date.setHours(date.getHours()-1);
+      console.log(date);
+      console.log("--------------- inserted id: " + id);
+      this.localNotifications.schedule({
+        id: id,
+        title: 'Notification: ' + this.todo.title,
+        text: this.todo.description,
+        trigger: { at: date },
+        led: 'FF0000',
+        sound: null,
+      });
 
-    this.todo = { title : "", description : "", type : "", date : "", notification : 0 };
-    console.log("******** notification has been planted!!")
-  }
-
-  setSound() {
-    if (this.platform.is('android')) {
-      return 'file://src/assets/sounds/unconvinced.mp3'
-    } else {
-      return 'file://src/assets/sounds/unconvinced.m4r'
+      //this.todo = { title : "", description : "", type : "", date : "", notification : 0 };
+      console.log("******** notification has been planted!!")
     }
+
   }
 
   takePhoto(){
@@ -98,10 +96,8 @@ export class AddPage {
           console.log(res);
           this.toast.show('Data saved', '5000', 'center').subscribe(
             toast => {
+              this.submitNotification(res.insertId);
               this.navCtrl.popToRoot();
-              if(this.notification === true){
-                this.submitNotification(res.insertId);
-              }
             }
           );
         })
@@ -127,6 +123,7 @@ export class AddPage {
   // fonction UI, permet d'affecter la date choisie par le user a la variable todoDate
   dateChanged(){
     this.todoDate = new Date(this.todo.date);
+    console.log("la date a ete changee a :" + this.todoDate);
     console.log(this.todoDate.getMonth()+1 + ", " + (this.todoDate.getHours()-1)+":"+this.todoDate.getMinutes() );
   }
 

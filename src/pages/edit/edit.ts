@@ -52,8 +52,6 @@ export class EditPage {
             this.data.type = res.rows.item(0).type;
             this.data.description = res.rows.item(0).description;
             this.data.notification = res.rows.item(0).notification;
-
-            this.localNotifications.cancel(res.rows.item(0).id);
           }
         })
         .catch(e => {
@@ -81,6 +79,8 @@ export class EditPage {
     }).then((db: SQLiteObject) => {
       this.dateChanged();
       if(this.notification === true){
+        this.localNotifications.cancel(this.data.id);
+        console.log("shit's canceled yo!")
         this.data.notification = 1;
         this.submitNotification(this.data.id);
       }
@@ -131,7 +131,8 @@ export class EditPage {
   submitNotification(id: number) {
     console.log(this.data);
     var date = new Date(this.data.date);
-    console.log(date);
+    date.setHours(date.getHours()-1);
+    console.log("edited date for notif: "+date);
     console.log("--------------- inserted id: " + id);
     this.localNotifications.schedule({
       id: id,
