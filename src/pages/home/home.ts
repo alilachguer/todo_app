@@ -4,6 +4,9 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import {AddPage} from "../add/add";
 import {DatabaseProvider} from "../../providers/database/database";
 import {EditPage} from "../edit/edit";
+import {SearchPage} from "../search/search";
+import {FormControl} from "@angular/forms";
+import 'rxjs/add/operator/debounceTime';
 
 /**
  * Generated class for the HomePage page.
@@ -20,16 +23,27 @@ import {EditPage} from "../edit/edit";
 export class HomePage {
 
   public todos: any = [];
+  searchBar: boolean = false;
+  searchTerm: string = "";
+  searchControl: FormControl;
+  searching: any = false;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public dbProvider: DatabaseProvider,
               private sqlite: SQLite) {
+    this.searchControl = new FormControl();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
     this.getData();
+
+    this.setFilteredItems();
+    this.searchControl.valueChanges.debounceTime(700).subscribe(search => {
+      this.searching = false;
+      this.setFilteredItems();
+    });
   }
 
   ionViewWillEnter() {
@@ -42,6 +56,13 @@ export class HomePage {
       name: this.dbProvider.DATABASE_NAME,
       location: 'default'
     }).then((db: SQLiteObject) => {
+
+      /***
+      db.executeSql(this.dbProvider.SQL_DELETE_ENTRIES, [])
+        .then(res => console.log('Executed SQL, table deleted'))
+        .catch(e => console.log(e));
+
+       */
 
       db.executeSql(this.dbProvider.SQL_CREATE_ENTRIES, [])
         .then(res => console.log('Executed SQL'))
@@ -69,6 +90,25 @@ export class HomePage {
 
   }
 
+  onSearchInput(){
+    this.searching = true;
+  }
+
+  setFilteredItems(){
+    this.todos = this.filterItems(this.searchTerm);
+    if(this.searchTerm == ""){
+      this.getData();
+    }
+  }
+
+  filterItems(searchTerm){
+
+    return this.todos.filter((item) => {
+      return item.title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+    });
+
+  }
+
   addData() {
     this.navCtrl.push(AddPage);
   }
@@ -76,6 +116,12 @@ export class HomePage {
   editData(rowid) {
     this.navCtrl.push(EditPage, {
       id:rowid
+    });
+  }
+
+  showData(rowid){
+    this.navCtrl.push(SearchPage, {
+      id: rowid
     });
   }
 
@@ -91,6 +137,19 @@ export class HomePage {
         })
         .catch(e => console.log(e));
     }).catch(e => console.log(e));
+  }
+
+  openSearch(){
+    if(this.searchBar)
+      this.searchBar = false
+    else
+      this.searchBar = true;
+
+  }
+
+  checkBlur(){
+    this.searchBar = false;
+    this.searching = false;
   }
 
 }

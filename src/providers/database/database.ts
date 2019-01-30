@@ -31,6 +31,9 @@ public COLUMN_NAME_DATE = 'date';
 public COLUMN_NAME_TIMEHOUR = 'timehour';
 public COLUMN_NAME_TIMEMINUTE = 'timeminute';
 public COLUMN_NAME_NOTIFICATION = 'notification';
+public COLUMN_NAME_IMAGE = 'image';
+public COLUMN_NAME_LONGITUDE = 'longitude';
+public COLUMN_NAME_LATTITUDE = 'lattitude';
 
 public SQL_CREATE_ENTRIES: string = 
       "CREATE TABLE if not exists " + this.TABLE_NAME + " (" +
@@ -41,6 +44,9 @@ public SQL_CREATE_ENTRIES: string =
       this.COLUMN_NAME_TYPE + " TEXT, " +
       this.COLUMN_NAME_TIMEHOUR + " TEXT, " +
       this.COLUMN_NAME_TIMEMINUTE + " TEXT, " +
+      this.COLUMN_NAME_IMAGE + " TEXT, " +
+      this.COLUMN_NAME_LONGITUDE + " TEXT, " +
+      this.COLUMN_NAME_LATTITUDE + " TEXT, " +
       this.COLUMN_NAME_NOTIFICATION + " TEXT)";
 
 public SQL_DELETE_ENTRIES: string = "DROP TABLE IF EXISTS " + this.TABLE_NAME;

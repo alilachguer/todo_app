@@ -8,6 +8,7 @@ import { CalendarPage } from '../pages/calendar/calendar';
 import { SearchPage } from '../pages/search/search';
 import { TabsPage } from '../pages/tabs/tabs';
 import { HomePage} from "../pages/home/home";
+import {EditPage, ModalDescriptionEdit} from "../pages/edit/edit";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,9 +22,9 @@ import { IonicStorageModule } from '@ionic/storage';
 import { SQLitePorter} from "@ionic-native/sqlite-porter";
 import {SplashScreen} from "@ionic-native/splash-screen";
 import {Toast} from "@ionic-native/toast";
-import {EditPage, ModalDescriptionEdit} from "../pages/edit/edit";
 
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import {Camera} from "@ionic-native/camera";
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
     SplashScreen,
     NativeStorage,
     SQLite,
+    Camera,
     Toast,
     DatabaseProvider,
     LocalNotifications,

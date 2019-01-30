@@ -12,7 +12,14 @@
       <button ion-button icon-only (click)="addData()">
         <ion-icon name="add-circle"></ion-icon>
       </button>
+      <button ion-button icon-only (click)="openSearch()">
+        <ion-icon name="search"></ion-icon>
+      </button>
     </ion-buttons>
+    <ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl" (ionInput)="onSearchInput()" showCancelButton *ngIf="searchBar" (ionBlur)="checkBlur()"></ion-searchbar>
+    <div *ngIf="searching" class="spinner-container">
+      <ion-spinner></ion-spinner>
+    </div>
   </ion-navbar>
 
 </ion-header>
@@ -23,7 +30,7 @@
   <h2>List of tasks</h2>
   <ion-list>
     <ion-item-sliding *ngFor="let todo of todos; let i=index">
-      <ion-item nopadding>
+      <ion-item nopadding (click)="showData(todo.id)">
         <h3 ion-text><strong>{{todo.title}}</strong></h3>
         <p>
           <span><div>{{todo.date}}</div></span>

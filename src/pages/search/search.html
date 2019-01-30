@@ -7,13 +7,35 @@
 <ion-header>  
 
   <ion-navbar>
-    <ion-title>search</ion-title>
+    <ion-title>Task details</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <h1> <b>{{data.title}}</b></h1>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <h5>{{data.description}}</h5>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <img src="{{(data.image)}}" />
+      </ion-item>
+    </ion-col>
+  </ion-row>
 
 
 

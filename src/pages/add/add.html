@@ -62,6 +62,19 @@
         </ion-col>
       </ion-row>
       <ion-row>
+        <ion-item>
+          <ion-col>
+            <button ion-button push-2 col-8 push-lg-4 col-lg-4 push-md-3 col-md-6 type="button" (click)="takePhoto()">
+              <ion-icon name="camera"></ion-icon>
+                take a photo
+            </button>
+          </ion-col>
+          <ion-item>
+            <img src="{{this.camera_path}}">
+          </ion-item>
+        </ion-item>
+      </ion-row>
+      <ion-row>
         <ion-col>
           <ion-item>
             <ion-label>Notification</ion-label>

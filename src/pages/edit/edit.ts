@@ -5,6 +5,7 @@ import {SQLite, SQLiteObject} from "@ionic-native/sqlite";
 import {Toast} from "@ionic-native/toast";
 import {DatabaseProvider} from "../../providers/database/database";
 import {LocalNotifications} from "@ionic-native/local-notifications";
+import {CalendarPage} from "../calendar/calendar";
 
 /**
  * Generated class for the EditPage page.
@@ -82,7 +83,11 @@ export class EditPage {
         this.localNotifications.cancel(this.data.id);
         console.log("shit's canceled yo!")
         this.data.notification = 1;
-        this.submitNotification(this.data.id);
+        if(this.data.type == 'Sport'){
+          this.submitNotificationWithAction(this.data.id)
+        }else{
+          this.submitNotification(this.data.id);
+        }
       }
       db.executeSql('UPDATE '+this.dbProvider.TABLE_NAME
         +' SET '+this.dbProvider.COLUMN_NAME_TITLE+'=?, '
@@ -142,8 +147,36 @@ export class EditPage {
     });
 
     this.data = { id : 0, title : "", description : "", type : "", date : "", notification : 0 };
-    console.log("******** notification has been planted!!")
+    console.log("******** notification has been planted!!");
   }
+
+  submitNotificationWithAction(id: number) {
+    console.log(this.data);
+    var date = new Date(this.data.date);
+    date.setHours(date.getHours()-1);
+    console.log("edited date for notif: "+date);
+    console.log("--------------- inserted id: " + id);
+    this.localNotifications.schedule({
+      id: id,
+      text: 'Notification: ' + this.data.title,
+      trigger: { at: date },
+      led: 'FF0000',
+      actions: [
+      { id: 'no', title: 'ignore' },
+      { id: 'yes', title: 'start', foreground: false }
+
+    ]
+    });
+
+    //this.data = { id : 0, title : "", description : "", type : "", date : "", notification : 0 };
+    console.log("******** notification has been planted!!");
+
+    this.localNotifications.on('yes').subscribe( (notification) => {
+      this.navCtrl.push(CalendarPage);
+    });
+  }
+
+
 
 
   ionViewDidLoad() {
