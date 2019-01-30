@@ -31,7 +31,16 @@
       </ion-item>
     </ion-col>
   </ion-row>
-  <ion-row>
+  <ion-row *ngIf="is_sport_task">
+    <ion-col>
+      <ion-item>
+        <button ion-button color="primary" push-md-3 col-md-6 push-2 col-8 push-lg-4 col-lg-4 (click)="startActivity()"  type="button">
+          Start Activity
+        </button>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="data.image!=''">
     <ion-col>
       <ion-item>
         <img src="{{(data.image)}}" />

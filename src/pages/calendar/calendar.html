@@ -7,12 +7,34 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>calendar</ion-title>
+    <ion-title>Walking activity</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
+  <ion-row text-center>
+    <ion-col>
+    </ion-col>
+    <ion-col>
+      <h1 class="count">{{stepCount}}</h1>
+
+      <br/>
+      <br/>
+
+      <button *ngIf="!start" ion-button  block icon-left color="primary" (click)="fnGetPedoUpdate()">
+        start
+      </button>
+      <button *ngIf="start" ion-button  block icon-left color="danger" (click)="fnStopPedoUpdate()">
+        stop
+      </button>
+
+    </ion-col>
+    <ion-col>
+    </ion-col>
+  </ion-row>
+
 
 </ion-content>

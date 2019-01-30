@@ -5,6 +5,7 @@ import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {Toast} from "@ionic-native/toast";
 import {DomSanitizer} from "@angular/platform-browser";
 import { normalizeURL } from 'ionic-angular';
+import {CalendarPage} from "../calendar/calendar";
 
 /**
  * Generated class for the SearchPage page.
@@ -30,10 +31,21 @@ export class SearchPage {
     lattitude: "",
     notification : 0,
   };
+
+  is_sport_task: boolean = false;
+
   constructor(public navCtrl: NavController, private toast: Toast,
               public navParams: NavParams, private DomSanitizer: DomSanitizer,
               private sqlite: SQLite, public dbProvider: DatabaseProvider) {
+
+    this.is_sport_task = false;
     this.getCurrentData(navParams.get("id"));
+
+
+  }
+
+  startActivity(){
+    this.navCtrl.push(CalendarPage);
   }
 
   getCurrentData(rowid) {
@@ -53,6 +65,12 @@ export class SearchPage {
             this.data.lattitude = res.rows.item(0).lattitude;
             this.data.description = res.rows.item(0).description;
             this.data.notification = res.rows.item(0).notification;
+          }
+
+          console.log("type: " + this.data.type);
+          if(this.data.type === "Sport"){
+            console.log("**** yep it is sport");
+            this.is_sport_task = true;
           }
 
           console.log("img path avant: " + this.data.image);
@@ -79,6 +97,10 @@ export class SearchPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SearchPage');
+  }
+
+  ionViewWillEnter() {
+    console.log('back to HomePage');
   }
 
 }

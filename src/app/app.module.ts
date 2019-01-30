@@ -25,6 +25,7 @@ import {Toast} from "@ionic-native/toast";
 
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import {Camera} from "@ionic-native/camera";
+import {Pedometer} from "@ionic-native/pedometer";
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import {Camera} from "@ionic-native/camera";
     DatabaseProvider,
     LocalNotifications,
     SQLitePorter,
+    Pedometer,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
