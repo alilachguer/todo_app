@@ -53,6 +53,9 @@ export class EditPage {
             this.data.type = res.rows.item(0).type;
             this.data.description = res.rows.item(0).description;
             this.data.notification = res.rows.item(0).notification;
+
+            this.todoDate = new Date(this.data.date);
+            console.log("data has benn collected, id: "+this.data.id+", type: "+this.data.type+", date: "+ this.todoDate);
           }
         })
         .catch(e => {
@@ -83,7 +86,7 @@ export class EditPage {
         this.localNotifications.cancel(this.data.id);
         console.log("shit's canceled yo!")
         this.data.notification = 1;
-        if(this.data.type == 'Sport'){
+        if(this.data.type === 'Sport'){
           this.submitNotificationWithAction(this.data.id)
         }else{
           this.submitNotification(this.data.id);
@@ -101,7 +104,7 @@ export class EditPage {
         [this.data.title,
           this.data.description,
           this.data.type,
-          this.data.date,
+          this.todoDate.toDateString(),
           this.todoDate.getHours()-1,
           this.todoDate.getMinutes(),
           this.data.notification,
@@ -141,7 +144,8 @@ export class EditPage {
     console.log("--------------- inserted id: " + id);
     this.localNotifications.schedule({
       id: id,
-      text: 'Notification: ' + this.data.title,
+      title: 'Notification: ' + this.data.title,
+      text: this.data.description,
       trigger: { at: date },
       led: 'FF0000'
     });
@@ -158,7 +162,8 @@ export class EditPage {
     console.log("--------------- inserted id: " + id);
     this.localNotifications.schedule({
       id: id,
-      text: 'Notification: ' + this.data.title,
+      title: 'Notification: ' + this.data.title,
+      text: this.data.description,
       trigger: { at: date },
       led: 'FF0000',
       actions: [
@@ -169,7 +174,7 @@ export class EditPage {
     });
 
     //this.data = { id : 0, title : "", description : "", type : "", date : "", notification : 0 };
-    console.log("******** notification has been planted!!");
+    console.log("******** notification has been planted!! with action");
 
     this.localNotifications.on('yes').subscribe( (notification) => {
       this.navCtrl.push(CalendarPage);

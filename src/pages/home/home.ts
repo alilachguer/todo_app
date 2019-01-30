@@ -141,7 +141,7 @@ export class HomePage {
 
   openSearch(){
     if(this.searchBar)
-      this.searchBar = false
+      this.searchBar = false;
     else
       this.searchBar = true;
 

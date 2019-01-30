@@ -25,7 +25,7 @@ import {CalendarPage} from "../calendar/calendar";
 export class AddPage {
 
   todoDate: Date;
-  public type: any;
+  //public type: any;
   public items = [];
   notification: Boolean = true;
   public camera_path: string = "";
@@ -98,7 +98,7 @@ export class AddPage {
         ]
       });
       //this.todo = { title : "", description : "", type : "", date : "", notification : 0 };
-      console.log("******** notification has been planted!!");
+      console.log("******** notification has been planted!! with action");
 
       this.localNotifications.on('yes').subscribe( (notification) => {
         this.navCtrl.push(CalendarPage);
@@ -159,7 +159,7 @@ export class AddPage {
           console.log(res);
           this.toast.show('Data saved', '5000', 'center').subscribe(
             toast => {
-              if(this.todo.type == 'Sport'){
+              if(this.todo.type === 'Sport'){
                 this.submitNotificationWithAction(res.insertId);
               }else{
                 this.submitNotification(res.insertId);

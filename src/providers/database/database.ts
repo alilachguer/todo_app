@@ -40,8 +40,8 @@ public SQL_CREATE_ENTRIES: string =
       this.COLUMN_NAME_ID + " INTEGER PRIMARY KEY, " +
       this.COLUMN_NAME_TITLE + " TEXT, " +
       this.COLUMN_NAME_DESCRIPTION + " TEXT, " +
-      this.COLUMN_NAME_DATE + " TEXT, " +
       this.COLUMN_NAME_TYPE + " TEXT, " +
+      this.COLUMN_NAME_DATE + " TEXT, " +
       this.COLUMN_NAME_TIMEHOUR + " TEXT, " +
       this.COLUMN_NAME_TIMEMINUTE + " TEXT, " +
       this.COLUMN_NAME_IMAGE + " TEXT, " +
